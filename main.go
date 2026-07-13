@@ -13,7 +13,7 @@ import (
 
 // Player represents an NBA player from the API
 type Player struct {
-	ID       int    `json:"id"`
+	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Position  string `json:"position"`
@@ -28,16 +28,18 @@ type APIResponse struct {
 	Data []Player `json:"data"`
 }
 
-// fetchPlayers pulls players from the NBA API
-func fetchPlayers(apiKey string) ([]Player, error) {
+// fetchPlayers pulls players, optionally filtering by name
+func fetchPlayers(apiKey string, search string) ([]Player, error) {
 	url := "https://api.balldontlie.io/v1/players?per_page=25"
+	if search != "" {
+		url += "&search=" + search
+	}
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	// add the API key to the request header
 	req.Header.Add("Authorization", apiKey)
 
 	client := &http.Client{}
@@ -62,7 +64,6 @@ func fetchPlayers(apiKey string) ([]Player, error) {
 }
 
 func main() {
-	// load the .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -73,13 +74,19 @@ func main() {
 		log.Fatal("API key not found in .env file")
 	}
 
-	fmt.Println("Connecting to NBA API...")
-	players, err := fetchPlayers(apiKey)
+	search := "LeBron"
+	fmt.Printf("Searching for '%s'...\n\n", search)
+
+	players, err := fetchPlayers(apiKey, search)
 	if err != nil {
 		log.Fatal("Error fetching players:", err)
 	}
 
-	fmt.Printf("Got %d players:\n\n", len(players))
+	if len(players) == 0 {
+		fmt.Println("No players found")
+		return
+	}
+
 	for _, p := range players {
 		fmt.Printf("%s %s — %s (%s)\n",
 			p.FirstName,
