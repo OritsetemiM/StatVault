@@ -18,7 +18,6 @@ func initDB() {
 		log.Fatal("Failed to open database:", err)
 	}
 
-	// create the players table if it doesn't exist
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS players (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +38,8 @@ func initDB() {
 			fg_pct REAL,
 			three_pct REAL,
 			ft_pct REAL,
-			turnovers REAL
+			turnovers REAL,
+			UNIQUE(name, season, sport)
 		)
 	`)
 	if err != nil {
