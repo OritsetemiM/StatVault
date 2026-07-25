@@ -28,13 +28,16 @@ func respondError(w http.ResponseWriter, status int, message string) {
 	json.NewEncoder(w).Encode(map[string]string{"error": message})
 }
 
-// handlePlayers handles GET /api/players?search=LeBron
 func handlePlayers(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
 
-	players, err := fetchPlayers(apiKey, search)
+	players, err := searchDB(search, "NBA")
 	if err != nil {
-		respondError(w, 500, "Failed to fetch players")
+		respondError(w, 500, "Search failed")
 		return
 	}
 
