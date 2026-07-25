@@ -69,30 +69,20 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	apiKey := os.Getenv("BALLDONTLIE_API_KEY")
-	if apiKey == "" {
-		log.Fatal("API key not found in .env file")
-	}
+	apiKey = os.Getenv("BALLDONTLIE_API_KEY")
 
-	search := "LeBron"
-	fmt.Printf("Searching for '%s'...\n\n", search)
-
-	players, err := fetchPlayers(apiKey, search)
-	if err != nil {
-		log.Fatal("Error fetching players:", err)
-	}
-
-	if len(players) == 0 {
+	// test stats lookup
+	results := searchPlayerStats("lebron")
+	if len(results) == 0 {
 		fmt.Println("No players found")
 		return
 	}
 
-	for _, p := range players {
-		fmt.Printf("%s %s — %s (%s)\n",
-			p.FirstName,
-			p.LastName,
-			p.Position,
-			p.Team.FullName,
-		)
-	}
+	p := results[0]
+	fmt.Printf("%s %s (%s)\n", p.FirstName, p.LastName, p.Team)
+	fmt.Printf("Games: %d\n", p.Games)
+	fmt.Printf("PPG: %.1f | APG: %.1f | RPG: %.1f\n",
+		p.Points, p.Assists, p.Rebounds)
+	fmt.Printf("FG%%: %.1f%% | 3P%%: %.1f%%\n",
+		p.FGPct*100, p.ThreePct*100)
 }
