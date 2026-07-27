@@ -10,17 +10,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// global API key so all handlers can use it
-var apiKey string
-
-// respondJSON sends a JSON response back to the browser
 func respondJSON(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(data)
 }
 
-// respondError sends an error message as JSON
 func respondError(w http.ResponseWriter, status int, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -44,9 +39,28 @@ func handlePlayers(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, players)
 }
 
-// handleHealth is a simple health check endpoint
 func handleHealth(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, map[string]string{"status": "ok"})
+}
+
+func handleCareer(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+	sport := r.URL.Query().Get("sport")
+	if name == "" {
+		respondError(w, 400, "name query required")
+		return
+	}
+	if sport == "" {
+		sport = "NBA"
+	}
+
+	career, err := getCareerAverages(name, sport)
+	if err != nil {
+		respondError(w, 404, "Player not found")
+		return
+	}
+
+	respondJSON(w, career)
 }
 
 func startServer() {
@@ -57,14 +71,15 @@ func startServer() {
 
 	apiKey = os.Getenv("BALLDONTLIE_API_KEY")
 	if apiKey == "" {
-		log.Fatal("API key not found in .env file")
+		log.Print("Warning: no API key found")
 	}
 
-	// API routes MUST be registered before the static file server
+	// API routes first
 	http.HandleFunc("/api/players", handlePlayers)
 	http.HandleFunc("/api/health", handleHealth)
+	http.HandleFunc("/api/career", handleCareer)
 
-	// static frontend files — registered LAST
+	// static frontend
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 
 	port := "8080"

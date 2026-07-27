@@ -22,6 +22,7 @@ func initDB() {
 		CREATE TABLE IF NOT EXISTS players (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			name TEXT NOT NULL,
+			search_name TEXT,
 			age INTEGER,
 			team TEXT,
 			position TEXT,

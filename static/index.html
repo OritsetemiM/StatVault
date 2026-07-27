@@ -1,235 +1,627 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>StatVault</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>StatVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #080810;
+      --surface:  #0f0f1a;
+      --surface2: #16162a;
+      --border:   #1e1e35;
+      --accent:   #e8ff00;
+      --accent2:  #7b5ea7;
+      --text:     #e8e8f0;
+      --muted:    #5a5a7a;
+    }
 
     body {
-      background: #0a0a0f;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
     }
 
+    /* NAV */
     nav {
-      background: #111118;
-      border-bottom: 2px solid #f04a00;
-      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .logo span { color: #fff; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 28px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 80px 40px 50px;
+      max-width: 700px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    /* SEARCH */
+    .search-section {
+      padding: 0 40px 40px;
+      position: relative;
+      max-width: 630px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0;
+    }
+
+    .search-row input {
+      flex: 1;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-row input::placeholder { color: var(--muted); }
+    .search-row input:focus { border-color: var(--accent2); }
+
+    .search-row button {
+      padding: 14px 24px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .search-row button:hover { opacity: 0.85; }
+
+    /* SEARCH RESULTS DROPDOWN */
+    .search-dropdown {
+      position: absolute;
+      top: 52px;
+      left: 0;
+      right: 60px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 0 0 8px 8px;
+      z-index: 200;
+      display: none;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .search-dropdown.visible { display: block; }
+
+    .dropdown-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .logo {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #f04a00;
-      letter-spacing: 2px;
-    }
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: var(--surface); }
 
-    .logo span { color: #ffffff; }
-
-    nav a {
-      color: #aaa;
-      text-decoration: none;
-      margin-left: 24px;
-      font-size: 0.95rem;
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: #f04a00; }
-
-    .hero {
-      text-align: center;
-      padding: 60px 20px 40px;
-    }
-
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 span { color: #f04a00; }
-
-    .hero p {
-      color: #888;
-      font-size: 1.1rem;
-      margin-bottom: 36px;
-    }
-
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 48px;
-      padding: 0 20px;
-    }
-
-    .search-bar input {
-      width: 100%;
-      max-width: 480px;
-      padding: 14px 20px;
-      background: #1a1a24;
-      border: 1px solid #333;
-      border-radius: 8px;
+    .dropdown-name {
+      font-weight: 600;
       color: #fff;
-      font-size: 1rem;
-      outline: none;
-      transition: border 0.2s;
+      font-size: 0.95rem;
     }
 
-    .search-bar input:focus { border-color: #f04a00; }
+    .dropdown-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
 
-    .search-bar button {
-      padding: 14px 28px;
-      background: #f04a00;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+    .dropdown-pts {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
       font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
+      color: var(--accent);
     }
 
-    .search-bar button:hover { background: #d43e00; }
-
-    .section-title {
-      text-align: center;
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 24px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+    .dropdown-pts span {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
     }
 
-    .players-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    /* PLAYER PROFILE */
+    .profile {
+      max-width: 1000px;
+      margin: 0 40px 80px;
+      display: none;
+    }
+
+    .profile.visible { display: block; }
+
+    .profile-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
       gap: 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px 60px;
+      overflow: visible;
     }
 
-    .player-card {
-      background: #111118;
-      border: 1px solid #222;
-      border-radius: 12px;
-      padding: 24px;
-      transition: border-color 0.2s, transform 0.2s;
+    .profile-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: visible;
     }
 
-    .player-card:hover {
-      border-color: #f04a00;
-      transform: translateY(-4px);
+    .profile-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 6px;
     }
 
-    .player-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    .player-position {
-      display: inline-block;
-      background: #f04a00;
-      color: white;
+    .profile-pos {
       font-size: 0.75rem;
       font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      border-radius: 3px;
     }
 
-    .player-team {
-      color: #888;
+    /* CAREER AVERAGES BANNER */
+    .career-banner {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: visible;
+      margin-bottom: 32px;
+    }
+
+    .career-stat {
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .career-stat-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .career-stat-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* SEASON TABLE */
+    .season-table-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .season-table {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: visible;
+    }
+
+    .season-head {
+      display: grid;
+      grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px;
+      padding: 10px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .season-row {
+      display: grid;
+      grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      transition: background 0.15s;
+    }
+
+    .season-row:last-child { border-bottom: none; }
+    .season-row:hover { background: var(--surface); }
+
+    .season-row .s-season {
+      font-weight: 600;
+      color: #fff;
       font-size: 0.9rem;
     }
 
-    .message {
-      text-align: center;
-      color: #555;
-      font-size: 1rem;
-      padding: 60px 0;
+    .season-row .s-team {
+      font-size: 0.8rem;
+      color: var(--muted);
     }
+
+    .season-row .s-stat {
+      font-size: 0.9rem;
+      color: var(--text);
+      text-align: right;
+    }
+
+    .season-row .s-stat.best {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* EMPTY */
+    .empty {
+      padding: 60px 40px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 40px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent2); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .team-abbr {
+    position: relative;
+    cursor: default;
+    border-bottom: 1px dashed var(--muted);
+    display: inline-block;
+  }
+
+    .team-abbr::after {
+    content: attr(data-full);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    margin-top: 6px;
+    z-index: 999;
+  }
+
+  .team-abbr:hover::after {
+    opacity: 1;
+  }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">STAT<span>VAULT</span></div>
-    <div>
-      <a href="#">NBA</a>
-      <a href="#">NFL</a>
-      <a href="#">Leaderboard</a>
-    </div>
-  </nav>
-
-  <div class="hero">
-    <h1>Sports Stats <span>Powered</span> by You</h1>
-    <p>Search NBA and NFL players, stats, and more.</p>
+<nav>
+  <div class="logo">STAT<span>VAULT</span></div>
+  <div class="nav-links">
+    <a href="#">NBA</a>
+    <a href="#">NFL</a>
+    <a href="#">Compare</a>
   </div>
+</nav>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search a player... e.g. LeBron, Mahomes" />
+<div class="hero">
+  <p class="hero-eyebrow">Real data. Real players. Your database.</p>
+  <h1>Built different.<br><em>Proven by stats.</em></h1>
+  <p>Search any NBA player and explore their full career — every season, every stat, all in one place.</p>
+</div>
+
+<div class="search-section" id="searchSection">
+  <div class="search-row">
+    <input type="text" id="searchInput" placeholder="Search a player... e.g. LeBron James, Anthony Edwards"/>
     <button onclick="searchPlayers()">Search</button>
   </div>
+  <div class="search-dropdown" id="searchDropdown"></div>
+</div>
 
-  <p class="section-title" id="sectionTitle">Enter a player name to search</p>
+<div class="profile" id="profileSection"></div>
 
-  <div class="players-grid" id="playersGrid">
-    <p class="message" id="emptyMessage">No results yet — try searching above</p>
-  </div>
+<div id="emptyState"></div>
 
-  <script>
-    document.getElementById('searchInput').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') searchPlayers();
-    });
+<footer>
+  Stats courtesy of <a href="https://www.basketball-reference.com" target="_blank">Basketball Reference</a>
+  &nbsp;·&nbsp; Built by Temi Maku
+</footer>
 
-    async function searchPlayers() {
-      const query = document.getElementById('searchInput').value.trim();
-      const grid = document.getElementById('playersGrid');
-      const title = document.getElementById('sectionTitle');
+<script>
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchPlayers();
+  });
 
-      if (!query) return;
-
-      grid.innerHTML = '<p class="message">Searching...</p>';
-      title.textContent = `Searching for "${query}"...`;
-
-      try {
-        const res = await fetch(`/api/players?search=${encodeURIComponent(query)}`);
-        const players = await res.json();
-
-        if (players.length === 0) {
-          grid.innerHTML = '<p class="message">No players found</p>';
-          title.textContent = 'No results found';
-          return;
-        }
-
-        title.textContent = `${players.length} result${players.length > 1 ? 's' : ''} found`;
-
-        grid.innerHTML = players.map(p => `
-          <div class="player-card">
-            <div class="player-name">${p.first_name} ${p.last_name}</div>
-            <div class="player-position">${p.position || 'N/A'}</div>
-            <div class="player-team">${p.team.full_name}</div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        grid.innerHTML = '<p class="message">Error connecting to server</p>';
-        title.textContent = 'Something went wrong';
-      }
+  // close dropdown when clicking outside
+  document.addEventListener('click', e => {
+    if (!document.getElementById('searchSection').contains(e.target)) {
+      document.getElementById('searchDropdown').classList.remove('visible');
     }
-  </script>
+  });
+
+  const teamNames = {
+  'ATL': 'Atlanta Hawks', 'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets',
+  'CHA': 'Charlotte Hornets', 'CHI': 'Chicago Bulls', 'CLE': 'Cleveland Cavaliers',
+  'DAL': 'Dallas Mavericks', 'DEN': 'Denver Nuggets', 'DET': 'Detroit Pistons',
+  'GSW': 'Golden State Warriors', 'HOU': 'Houston Rockets', 'IND': 'Indiana Pacers',
+  'LAC': 'LA Clippers', 'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies',
+  'MIA': 'Miami Heat', 'MIL': 'Milwaukee Bucks', 'MIN': 'Minnesota Timberwolves',
+  'NOP': 'New Orleans Pelicans', 'NYK': 'New York Knicks', 'OKC': 'Oklahoma City Thunder',
+  'ORL': 'Orlando Magic', 'PHI': 'Philadelphia 76ers', 'PHX': 'Phoenix Suns',
+  'POR': 'Portland Trail Blazers', 'SAC': 'Sacramento Kings', 'SAS': 'San Antonio Spurs',
+  'TOR': 'Toronto Raptors', 'UTA': 'Utah Jazz', 'WAS': 'Washington Wizards',
+  'TOT': 'Multiple Teams (traded)'
+};
+
+  async function searchPlayers() {
+    const query = document.getElementById('searchInput').value.trim();
+    const dropdown = document.getElementById('searchDropdown');
+
+    if (!query) return;
+
+    try {
+      const res = await fetch(`/api/players?search=${encodeURIComponent(query)}`);
+      const players = await res.json();
+
+      if (!players || players.length === 0) {
+        dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">No players found</div></div>';
+        dropdown.classList.add('visible');
+        return;
+      }
+
+      // deduplicate by name — show each player once in dropdown
+      const seen = {};
+      const unique = [];
+      for (const p of players) {
+        if (!seen[p.name]) {
+          seen[p.name] = true;
+          unique.push(p);
+        }
+      }
+
+      dropdown.innerHTML = unique.map(p => `
+        <div class="dropdown-item" onclick="showProfile('${p.name.replace(/'/g, "\\'")}')">
+          <div>
+            <div class="dropdown-name">${p.name}</div>
+            <div class="dropdown-meta">${p.position} · <span class="team-abbr" data-full="${teamNames[p.team] || p.team}">${p.team}</span> · ${p.season}</div>
+          </div>
+          <div>
+            <div class="dropdown-pts">${p.points.toFixed(1)} <span>PPG</span></div>
+          </div>
+        </div>
+      `).join('');
+
+      dropdown.classList.add('visible');
+
+    } catch (err) {
+      dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">Error connecting to server</div></div>';
+      dropdown.classList.add('visible');
+    }
+  }
+
+  async function showProfile(playerName) {
+    // close dropdown
+    document.getElementById('searchDropdown').classList.remove('visible');
+    document.getElementById('searchInput').value = playerName;
+
+    const profile = document.getElementById('profileSection');
+    profile.innerHTML = '<div class="empty">Loading...</div>';
+    profile.classList.add('visible');
+
+    try {
+      // fetch all seasons for this player
+      const res = await fetch(`/api/players?search=${encodeURIComponent(playerName)}`);
+      const seasons = await res.json();
+
+      if (!seasons || seasons.length === 0) {
+        profile.innerHTML = '<div class="empty">No data found for this player.</div>';
+        return;
+      }
+
+      // sort seasons oldest to newest
+      seasons.sort((a, b) => a.season.localeCompare(b.season));
+
+      const p = seasons[0];
+
+      // calculate career averages weighted by games
+      let tG = 0, tPts = 0, tAst = 0, tReb = 0, tStl = 0, tBlk = 0, tFg = 0, tFg3 = 0;
+      for (const s of seasons) {
+        tPts += s.points * s.games;
+        tAst += s.assists * s.games;
+        tReb += s.rebounds * s.games;
+        tStl += s.steals * s.games;
+        tBlk += s.blocks * s.games;
+        tFg  += s.fg_pct * s.games;
+        tFg3 += s.three_pct * s.games;
+        tG   += s.games;
+      }
+
+      const avg = v => (v / tG).toFixed(1);
+      const pct = v => ((v / tG) * 100).toFixed(1) + '%';
+
+      // find best season points for highlighting
+      const maxPts = Math.max(...seasons.map(s => s.points));
+
+      profile.innerHTML = `
+        <div class="profile-header">
+          <div>
+            <div class="profile-name">${p.name}</div>
+            <div class="profile-sub">${seasons.length} season${seasons.length > 1 ? 's' : ''} in database · ${tG} games</div>
+          </div>
+          <div class="profile-pos">${p.position}</div>
+        </div>
+
+        <div class="career-banner">
+          <div class="career-stat">
+            <div class="career-stat-value">${avg(tPts)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Points Per Game">PPG</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${avg(tAst)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Assists Per Game">APG</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${avg(tReb)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${avg(tStl)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${avg(tBlk)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Blocks Per Game">BPG</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${pct(tFg)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div>
+          </div>
+          <div class="career-stat">
+            <div class="career-stat-value">${pct(tFg3)}</div>
+            <div class="career-stat-label"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div>
+          </div>
+        </div>
+
+        <div class="season-table-title">Season by Season</div>
+        <div class="season-table">
+          <div class="season-head">
+          <div>Season</div>
+          <div>Team</div>
+          <div><span class="team-abbr" data-full="Games Played">G</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="Points Per Game">PPG</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="Assists Per Game">APG</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div>
+          <div style="text-align:right"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div>
+        </div>
+          ${seasons.map(s => `
+            <div class="season-row">
+              <div class="s-season">${s.season}</div>
+              <div class="s-team"><span class="team-abbr" data-full="${teamNames[s.team] || s.team}">${s.team}</span></div>
+              <div class="s-stat">${s.games}</div>
+              <div class="s-stat ${s.points === maxPts ? 'best' : ''}">${s.points.toFixed(1)}</div>
+              <div class="s-stat">${s.assists.toFixed(1)}</div>
+              <div class="s-stat">${s.rebounds.toFixed(1)}</div>
+              <div class="s-stat">${s.steals.toFixed(1)}</div>
+              <div class="s-stat">${(s.fg_pct * 100).toFixed(1)}%</div>
+              <div class="s-stat">${(s.three_pct * 100).toFixed(1)}%</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+    } catch (err) {
+      profile.innerHTML = '<div class="empty">Error loading player profile.</div>';
+    }
+  }
+</script>
 
 </body>
 </html>

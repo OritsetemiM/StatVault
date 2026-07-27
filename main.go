@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var apiKey string
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -19,7 +21,6 @@ func main() {
 
 	// initialize database
 	initDB()
-	defer db.Close()
 
 	// import all seasons
 	seasons := []struct {
@@ -43,25 +44,8 @@ func main() {
 		}
 	}
 
-	fmt.Println("\nDone! Testing searches...")
+	fmt.Println("All seasons imported. Starting server...")
 
-	// test 1: search for Anthony Edwards
-	fmt.Println("\n--- Anthony Edwards ---")
-	players, err := searchDB("Anthony Edwards", "NBA")
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, p := range players {
-		fmt.Printf("%s (%s) — %s | %.1f PPG | %.1f APG | %.1f RPG\n",
-			p.Name, p.Season, p.Team, p.Points, p.Assists, p.Rebounds)
-	}
-
-	// test 2: career averages for LeBron
-	fmt.Println("\n--- LeBron James Career ---")
-	career, err := getCareerAverages("LeBron James", "NBA")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Career (%d seasons): %.1f PPG | %.1f APG | %.1f RPG\n",
-		career.Seasons, career.Points, career.Assists, career.Rebounds)
+	// start the web server
+	startServer()
 }

@@ -7,39 +7,55 @@ import (
 
 // DBPlayer represents a player row from the database
 type DBPlayer struct {
-	ID       int
-	Name     string
-	Age      int
-	Team     string
-	Position string
-	Sport    string
-	Season   string
-	Games    int
-	Points   float64
-	Assists  float64
-	Rebounds float64
-	Steals   float64
-	Blocks   float64
-	FGPct    float64
-	ThreePct float64
-	FTPct    float64
-	Turnovers float64
+	ID        int     `json:"id"`
+	Name      string  `json:"name"`
+	Age       int     `json:"age"`
+	Team      string  `json:"team"`
+	Position  string  `json:"position"`
+	Sport     string  `json:"sport"`
+	Season    string  `json:"season"`
+	Games     int     `json:"games"`
+	Points    float64 `json:"points"`
+	Assists   float64 `json:"assists"`
+	Rebounds  float64 `json:"rebounds"`
+	Steals    float64 `json:"steals"`
+	Blocks    float64 `json:"blocks"`
+	FGPct     float64 `json:"fg_pct"`
+	ThreePct  float64 `json:"three_pct"`
+	FTPct     float64 `json:"ft_pct"`
+	Turnovers float64 `json:"turnovers"`
 }
 
-// searchDB searches for players by name in the database
+// CareerStats holds calculated career averages
+type CareerStats struct {
+	Name     string  `json:"name"`
+	Sport    string  `json:"sport"`
+	Seasons  int     `json:"seasons"`
+	Games    int     `json:"games"`
+	Points   float64 `json:"points"`
+	Assists  float64 `json:"assists"`
+	Rebounds float64 `json:"rebounds"`
+	Steals   float64 `json:"steals"`
+	Blocks   float64 `json:"blocks"`
+	FGPct    float64 `json:"fg_pct"`
+	ThreePct float64 `json:"three_pct"`
+}
+
+// searchDB searches for players by name in both name and search_name columns
 func searchDB(query string, sport string) ([]DBPlayer, error) {
-	query = "%" + strings.ToLower(query) + "%"
+	q := "%" + strings.ToLower(query) + "%"
+	normalized := "%" + strings.ToLower(normalizeText(query)) + "%"
 
 	rows, err := db.Query(`
 		SELECT id, name, age, team, position, sport, season,
 		games, points, assists, rebounds, steals, blocks,
 		fg_pct, three_pct, ft_pct, turnovers
 		FROM players
-		WHERE LOWER(name) LIKE ?
+		WHERE (LOWER(name) LIKE ? OR LOWER(search_name) LIKE ?)
 		AND sport = ?
-		ORDER BY points DESC
-		LIMIT 10
-	`, query, sport)
+		ORDER BY season DESC, points DESC
+		LIMIT 20
+	`, q, normalized, sport)
 	if err != nil {
 		return nil, fmt.Errorf("search failed: %w", err)
 	}
@@ -62,20 +78,21 @@ func searchDB(query string, sport string) ([]DBPlayer, error) {
 	return players, nil
 }
 
-// getPlayerByName gets a specific player's full stats
+// getPlayerByName gets a specific player's most recent season
 func getPlayerByName(name string, sport string) (*DBPlayer, error) {
-	query := "%" + strings.ToLower(name) + "%"
+	q := "%" + strings.ToLower(name) + "%"
+	normalized := "%" + strings.ToLower(normalizeText(name)) + "%"
 
 	row := db.QueryRow(`
 		SELECT id, name, age, team, position, sport, season,
 		games, points, assists, rebounds, steals, blocks,
 		fg_pct, three_pct, ft_pct, turnovers
 		FROM players
-		WHERE LOWER(name) LIKE ?
+		WHERE (LOWER(name) LIKE ? OR LOWER(search_name) LIKE ?)
 		AND sport = ?
-		ORDER BY points DESC
+		ORDER BY season DESC
 		LIMIT 1
-	`, query, sport)
+	`, q, normalized, sport)
 
 	var p DBPlayer
 	err := row.Scan(
@@ -90,33 +107,19 @@ func getPlayerByName(name string, sport string) (*DBPlayer, error) {
 	return &p, nil
 }
 
-// CareerStats holds calculated career averages from multiple seasons
-type CareerStats struct {
-	Name     string
-	Sport    string
-	Seasons  int
-	Games    int
-	Points   float64
-	Assists  float64
-	Rebounds float64
-	Steals   float64
-	Blocks   float64
-	FGPct    float64
-	ThreePct float64
-}
-
 // getCareerAverages calculates career averages across all seasons
 func getCareerAverages(name string, sport string) (*CareerStats, error) {
-	query := "%" + strings.ToLower(name) + "%"
+	q := "%" + strings.ToLower(name) + "%"
+	normalized := "%" + strings.ToLower(normalizeText(name)) + "%"
 
 	rows, err := db.Query(`
 		SELECT games, points, assists, rebounds, steals, blocks,
 		fg_pct, three_pct
 		FROM players
-		WHERE LOWER(name) LIKE ?
+		WHERE (LOWER(name) LIKE ? OR LOWER(search_name) LIKE ?)
 		AND sport = ?
 		ORDER BY season ASC
-	`, query, sport)
+	`, q, normalized, sport)
 	if err != nil {
 		return nil, fmt.Errorf("career query failed: %w", err)
 	}
@@ -133,7 +136,6 @@ func getCareerAverages(name string, sport string) (*CareerStats, error) {
 		if err != nil {
 			continue
 		}
-		// weight averages by games played
 		totalPts += pts * float64(games)
 		totalAst += ast * float64(games)
 		totalReb += reb * float64(games)

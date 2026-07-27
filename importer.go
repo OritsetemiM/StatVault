@@ -66,11 +66,11 @@ func importNBACSV(filename string, season string) error {
 
 	// prepare insert statement
 	stmt, err := db.Prepare(`
-		INSERT INTO players 
-		(name, age, team, position, sport, season, games, games_started, 
+		INSERT OR IGNORE INTO players 
+		(name, search_name, age, team, position, sport, season, games, games_started, 
 		minutes_per_game, points, assists, rebounds, steals, blocks, 
 		fg_pct, three_pct, ft_pct, turnovers)
-		VALUES (?, ?, ?, ?, 'NBA', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		VALUES (?, ?, ?, ?, ?, 'NBA', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`)
 	if err != nil {
 		return fmt.Errorf("could not prepare statement: %w", err)
@@ -86,7 +86,7 @@ func importNBACSV(filename string, season string) error {
 			break
 		}
 		if err != nil {
-			continue // skip bad rows
+			continue
 		}
 
 		// skip header rows that repeat in the middle of the table
@@ -94,13 +94,13 @@ func importNBACSV(filename string, season string) error {
 			continue
 		}
 
-		// get player name — skip duplicates (traded players appear twice)
+		// get player name
 		name := strings.TrimSpace(row[colIdx["Player"]])
 		if name == "" {
 			continue
 		}
 
-		// skip duplicate entries — keep first (total stats)
+		// skip duplicates — keep first (total stats for traded players)
 		if seenPlayers[name] {
 			continue
 		}
@@ -124,7 +124,7 @@ func importNBACSV(filename string, season string) error {
 		tov := parseFloat(row[colIdx["TOV"]])
 
 		_, err = stmt.Exec(
-			name, age, team, pos, season,
+			name, normalizeText(name), age, team, pos, season,
 			games, gamesStarted, mp,
 			pts, ast, reb, stl, blk,
 			fgPct, threePct, ftPct, tov,
