@@ -48,4 +48,5 @@ func initDB() {
 	}
 
 	fmt.Println("Database initialized successfully")
+	initNFLDB()
 }

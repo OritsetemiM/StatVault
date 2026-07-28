@@ -63,6 +63,48 @@ func handleCareer(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, career)
 }
 
+func handleNFLPassing(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
+	results, err := searchNFLPassing(search)
+	if err != nil {
+		respondError(w, 500, "Search failed")
+		return
+	}
+	respondJSON(w, results)
+}
+
+func handleNFLRushing(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
+	results, err := searchNFLRushing(search)
+	if err != nil {
+		respondError(w, 500, "Search failed")
+		return
+	}
+	respondJSON(w, results)
+}
+
+func handleNFLReceiving(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
+	results, err := searchNFLReceiving(search)
+	if err != nil {
+		respondError(w, 500, "Search failed")
+		return
+	}
+	respondJSON(w, results)
+}
+
 func startServer() {
 	err := godotenv.Load()
 	if err != nil {
@@ -81,6 +123,10 @@ func startServer() {
 
 	// static frontend
 	http.Handle("/", http.FileServer(http.Dir("./static")))
+
+	http.HandleFunc("/api/nfl/passing", handleNFLPassing)
+	http.HandleFunc("/api/nfl/rushing", handleNFLRushing)
+	http.HandleFunc("/api/nfl/receiving", handleNFLReceiving)
 
 	port := "8080"
 	fmt.Printf("StatVault server running at http://localhost:%s\n", port)

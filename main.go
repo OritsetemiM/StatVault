@@ -44,8 +44,29 @@ func main() {
 		}
 	}
 
+		// import NFL data
+	fmt.Println("Importing NFL 2025 passing...")
+	err = importNFLPassing("data/nfl_2025_passing.csv", "2025")
+	if err != nil {
+		log.Printf("Warning: could not import NFL passing: %v\n", err)
+	}
+
+	fmt.Println("Importing NFL 2025 rushing...")
+	err = importNFLRushing("data/nfl_2025_rushing.csv", "2025")
+	if err != nil {
+		log.Printf("Warning: could not import NFL rushing: %v\n", err)
+	}
+
+	fmt.Println("Importing NFL 2025 receiving...")
+	err = importNFLReceiving("data/nfl_2025_receiving.csv", "2025")
+	if err != nil {
+		log.Printf("Warning: could not import NFL receiving: %v\n", err)
+	}
+
 	fmt.Println("All seasons imported. Starting server...")
 
 	// start the web server
 	startServer()
+
+
 }
