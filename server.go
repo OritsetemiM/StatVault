@@ -23,19 +23,18 @@ func respondError(w http.ResponseWriter, status int, message string) {
 	json.NewEncoder(w).Encode(map[string]string{"error": message})
 }
 
+// NBA handlers
 func handlePlayers(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
 	if search == "" {
 		respondError(w, 400, "search query required")
 		return
 	}
-
 	players, err := searchDB(search, "NBA")
 	if err != nil {
 		respondError(w, 500, "Search failed")
 		return
 	}
-
 	respondJSON(w, players)
 }
 
@@ -53,14 +52,41 @@ func handleCareer(w http.ResponseWriter, r *http.Request) {
 	if sport == "" {
 		sport = "NBA"
 	}
-
 	career, err := getCareerAverages(name, sport)
 	if err != nil {
 		respondError(w, 404, "Player not found")
 		return
 	}
-
 	respondJSON(w, career)
+}
+
+// NFL handlers
+func handleNFLSearch(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
+	results, err := searchNFLAll(search)
+	if err != nil {
+		respondError(w, 500, "Search failed")
+		return
+	}
+	respondJSON(w, results)
+}
+
+func handleNFLProfile(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+	if name == "" {
+		respondError(w, 400, "name required")
+		return
+	}
+	profile, err := getNFLProfile(name)
+	if err != nil {
+		respondError(w, 404, "Player not found")
+		return
+	}
+	respondJSON(w, profile)
 }
 
 func handleNFLPassing(w http.ResponseWriter, r *http.Request) {
@@ -105,6 +131,20 @@ func handleNFLReceiving(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, results)
 }
 
+func handleNFLDefense(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	if search == "" {
+		respondError(w, 400, "search query required")
+		return
+	}
+	results, err := searchNFLDefense(search)
+	if err != nil {
+		respondError(w, 500, "Search failed")
+		return
+	}
+	respondJSON(w, results)
+}
+
 func startServer() {
 	err := godotenv.Load()
 	if err != nil {
@@ -116,17 +156,19 @@ func startServer() {
 		log.Print("Warning: no API key found")
 	}
 
-	// API routes first
+	// API routes
 	http.HandleFunc("/api/players", handlePlayers)
 	http.HandleFunc("/api/health", handleHealth)
 	http.HandleFunc("/api/career", handleCareer)
-
-	// static frontend
-	http.Handle("/", http.FileServer(http.Dir("./static")))
-
+	http.HandleFunc("/api/nfl/search", handleNFLSearch)
+	http.HandleFunc("/api/nfl/profile", handleNFLProfile)
 	http.HandleFunc("/api/nfl/passing", handleNFLPassing)
 	http.HandleFunc("/api/nfl/rushing", handleNFLRushing)
 	http.HandleFunc("/api/nfl/receiving", handleNFLReceiving)
+	http.HandleFunc("/api/nfl/defense", handleNFLDefense)
+
+	// static frontend
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 
 	port := "8080"
 	fmt.Printf("StatVault server running at http://localhost:%s\n", port)

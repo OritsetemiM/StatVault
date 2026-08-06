@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>StatVault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StatVault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -17,6 +17,7 @@
       --accent2:  #7b5ea7;
       --text:     #e8e8f0;
       --muted:    #5a5a7a;
+      --nfl:      #00c896;
     }
 
     body {
@@ -51,18 +52,35 @@
 
     .logo span { color: #fff; }
 
-    .nav-links a {
+    .nav-links { display: flex; gap: 4px; }
+
+    .nav-tab {
       color: var(--muted);
       text-decoration: none;
-      margin-left: 28px;
+      padding: 6px 16px;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      transition: color 0.2s;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
     }
 
-    .nav-links a:hover { color: var(--accent); }
+    .nav-tab:hover { color: var(--text); }
+
+    .nav-tab.active-nba {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(232, 255, 0, 0.06);
+    }
+
+    .nav-tab.active-nfl {
+      color: var(--nfl);
+      border-color: var(--nfl);
+      background: rgba(0, 200, 150, 0.06);
+    }
 
     /* HERO */
     .hero {
@@ -75,9 +93,12 @@
       font-weight: 600;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--accent);
       margin-bottom: 16px;
+      transition: color 0.3s;
     }
+
+    .hero-eyebrow.nba { color: var(--accent); }
+    .hero-eyebrow.nfl { color: var(--nfl); }
 
     .hero h1 {
       font-family: 'Barlow Condensed', sans-serif;
@@ -91,8 +112,11 @@
 
     .hero h1 em {
       font-style: normal;
-      color: var(--accent);
+      transition: color 0.3s;
     }
+
+    .hero h1 em.nba { color: var(--accent); }
+    .hero h1 em.nfl { color: var(--nfl); }
 
     .hero p {
       color: var(--muted);
@@ -101,11 +125,35 @@
       max-width: 480px;
     }
 
+    /* SPORT BADGE */
+    .sport-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .sport-badge.nba {
+      background: rgba(232, 255, 0, 0.1);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .sport-badge.nfl {
+      background: rgba(0, 200, 150, 0.1);
+      color: var(--nfl);
+      border: 1px solid var(--nfl);
+    }
+
     /* SEARCH */
     .search-section {
       padding: 0 40px 40px;
       position: relative;
-      max-width: 630px;
+      max-width: 800px;
     }
 
     .search-row {
@@ -132,7 +180,6 @@
 
     .search-row button {
       padding: 14px 24px;
-      background: var(--accent);
       color: #000;
       border: none;
       border-radius: 0 4px 4px 0;
@@ -145,9 +192,11 @@
       transition: opacity 0.2s;
     }
 
+    .search-row button.nba { background: var(--accent); }
+    .search-row button.nfl { background: var(--nfl); }
     .search-row button:hover { opacity: 0.85; }
 
-    /* SEARCH RESULTS DROPDOWN */
+    /* DROPDOWN */
     .search-dropdown {
       position: absolute;
       top: 52px;
@@ -189,21 +238,24 @@
       margin-top: 2px;
     }
 
-    .dropdown-pts {
+    .dropdown-stat {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 1.2rem;
       font-weight: 700;
-      color: var(--accent);
+      text-align: right;
     }
 
-    .dropdown-pts span {
+    .dropdown-stat.nba { color: var(--accent); }
+    .dropdown-stat.nfl { color: var(--nfl); }
+
+    .dropdown-stat span {
       font-size: 0.7rem;
       color: var(--muted);
       font-family: 'Inter', sans-serif;
       font-weight: 400;
     }
 
-    /* PLAYER PROFILE */
+    /* PROFILE */
     .profile {
       max-width: 1000px;
       margin: 0 40px 80px;
@@ -245,16 +297,23 @@
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 2px;
-      color: var(--accent);
-      border: 1px solid var(--accent);
       padding: 4px 12px;
       border-radius: 3px;
     }
 
-    /* CAREER AVERAGES BANNER */
+    .profile-pos.nba {
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .profile-pos.nfl {
+      color: var(--nfl);
+      border: 1px solid var(--nfl);
+    }
+
+    /* CAREER BANNER */
     .career-banner {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -273,9 +332,11 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 2rem;
       font-weight: 800;
-      color: var(--accent);
       line-height: 1;
     }
+
+    .career-stat-value.nba { color: var(--accent); }
+    .career-stat-value.nfl { color: var(--nfl); }
 
     .career-stat-label {
       font-size: 0.68rem;
@@ -303,8 +364,6 @@
     }
 
     .season-head {
-      display: grid;
-      grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px;
       padding: 10px 20px;
       background: var(--surface2);
       border-bottom: 1px solid var(--border);
@@ -313,41 +372,69 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--muted);
+      display: grid;
     }
 
     .season-row {
-      display: grid;
-      grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px;
       padding: 12px 20px;
       border-bottom: 1px solid var(--border);
       align-items: center;
       transition: background 0.15s;
+      display: grid;
     }
 
     .season-row:last-child { border-bottom: none; }
     .season-row:hover { background: var(--surface); }
 
-    .season-row .s-season {
+    .s-season {
       font-weight: 600;
       color: #fff;
       font-size: 0.9rem;
     }
 
-    .season-row .s-team {
+    .s-team {
       font-size: 0.8rem;
       color: var(--muted);
     }
 
-    .season-row .s-stat {
+    .s-stat {
       font-size: 0.9rem;
       color: var(--text);
       text-align: right;
     }
 
-    .season-row .s-stat.best {
-      color: var(--accent);
-      font-weight: 700;
+    .s-stat.best-nba { color: var(--accent); font-weight: 700; }
+    .s-stat.best-nfl { color: var(--nfl); font-weight: 700; }
+
+    /* TOOLTIP */
+    .team-abbr {
+      position: relative;
+      cursor: default;
+      border-bottom: 1px dashed var(--muted);
+      display: inline-block;
     }
+
+    .team-abbr::after {
+      content: attr(data-full);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.75rem;
+      white-space: nowrap;
+      padding: 5px 10px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      margin-top: 6px;
+      z-index: 999;
+    }
+
+    .team-abbr:hover::after { opacity: 1; }
 
     /* EMPTY */
     .empty {
@@ -366,37 +453,6 @@
 
     footer a { color: var(--accent2); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
-
-    .team-abbr {
-    position: relative;
-    cursor: default;
-    border-bottom: 1px dashed var(--muted);
-    display: inline-block;
-  }
-
-    .team-abbr::after {
-    content: attr(data-full);
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 0.75rem;
-    white-space: nowrap;
-    padding: 5px 10px;
-    border-radius: 4px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s;
-    margin-top: 6px;
-    z-index: 999;
-  }
-
-  .team-abbr:hover::after {
-    opacity: 1;
-  }
   </style>
 </head>
 <body>
@@ -404,39 +460,108 @@
 <nav>
   <div class="logo">STAT<span>VAULT</span></div>
   <div class="nav-links">
-    <a href="#">NBA</a>
-    <a href="#">NFL</a>
-    <a href="#">Compare</a>
+    <div class="nav-tab active-nba" onclick="switchSport('nba')">NBA</div>
+    <div class="nav-tab" onclick="switchSport('nfl')">NFL</div>
+    <div class="nav-tab" onclick="">Compare</div>
   </div>
 </nav>
 
 <div class="hero">
-  <p class="hero-eyebrow">Real data. Real players. Your database.</p>
-  <h1>Built different.<br><em>Proven by stats.</em></h1>
-  <p>Search any NBA player and explore their full career — every season, every stat, all in one place.</p>
+  <div class="sport-badge nba" id="sportBadge">NBA</div>
+  <p class="hero-eyebrow nba" id="heroEyebrow">Real data. Real players. Your database.</p>
+  <h1>Built different.<br><em class="nba" id="heroEm">Proven by stats.</em></h1>
+  <p id="heroSub">Search any NBA player and explore their full career — every season, every stat, all in one place.</p>
 </div>
 
 <div class="search-section" id="searchSection">
   <div class="search-row">
     <input type="text" id="searchInput" placeholder="Search a player... e.g. LeBron James, Anthony Edwards"/>
-    <button onclick="searchPlayers()">Search</button>
+    <button class="nba" id="searchBtn" onclick="searchPlayers()">Search</button>
   </div>
   <div class="search-dropdown" id="searchDropdown"></div>
 </div>
 
 <div class="profile" id="profileSection"></div>
-
 <div id="emptyState"></div>
 
 <footer>
-  Stats courtesy of <a href="https://www.basketball-reference.com" target="_blank">Basketball Reference</a>
+  Stats courtesy of
+  <a href="https://www.basketball-reference.com" target="_blank">Basketball Reference</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.pro-football-reference.com" target="_blank">Pro Football Reference</a>
   &nbsp;·&nbsp; Built by Temi Maku
 </footer>
 
 <script>
-  document.getElementById('searchInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') searchPlayers();
-  });
+  // current sport mode
+  let currentSport = 'nba';
+
+  // NBA team name map
+  const nbaTeams = {
+    'ATL': 'Atlanta Hawks', 'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets',
+    'CHA': 'Charlotte Hornets', 'CHI': 'Chicago Bulls', 'CLE': 'Cleveland Cavaliers',
+    'DAL': 'Dallas Mavericks', 'DEN': 'Denver Nuggets', 'DET': 'Detroit Pistons',
+    'GSW': 'Golden State Warriors', 'HOU': 'Houston Rockets', 'IND': 'Indiana Pacers',
+    'LAC': 'LA Clippers', 'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies',
+    'MIA': 'Miami Heat', 'MIL': 'Milwaukee Bucks', 'MIN': 'Minnesota Timberwolves',
+    'NOP': 'New Orleans Pelicans', 'NYK': 'New York Knicks', 'OKC': 'Oklahoma City Thunder',
+    'ORL': 'Orlando Magic', 'PHI': 'Philadelphia 76ers', 'PHX': 'Phoenix Suns',
+    'POR': 'Portland Trail Blazers', 'SAC': 'Sacramento Kings', 'SAS': 'San Antonio Spurs',
+    'TOR': 'Toronto Raptors', 'UTA': 'Utah Jazz', 'WAS': 'Washington Wizards',
+    'TOT': 'Multiple Teams (traded)'
+  };
+
+  // NFL team name map
+  const nflTeams = {
+    'ARI': 'Arizona Cardinals', 'ATL': 'Atlanta Falcons', 'BAL': 'Baltimore Ravens',
+    'BUF': 'Buffalo Bills', 'CAR': 'Carolina Panthers', 'CHI': 'Chicago Bears',
+    'CIN': 'Cincinnati Bengals', 'CLE': 'Cleveland Browns', 'DAL': 'Dallas Cowboys',
+    'DEN': 'Denver Broncos', 'DET': 'Detroit Lions', 'GNB': 'Green Bay Packers',
+    'HOU': 'Houston Texans', 'IND': 'Indianapolis Colts', 'JAX': 'Jacksonville Jaguars',
+    'KAN': 'Kansas City Chiefs', 'LAC': 'Los Angeles Chargers', 'LAR': 'Los Angeles Rams',
+    'LVR': 'Las Vegas Raiders', 'MIA': 'Miami Dolphins', 'MIN': 'Minnesota Vikings',
+    'NWE': 'New England Patriots', 'NOR': 'New Orleans Saints', 'NYG': 'New York Giants',
+    'NYJ': 'New York Jets', 'PHI': 'Philadelphia Eagles', 'PIT': 'Pittsburgh Steelers',
+    'SFO': 'San Francisco 49ers', 'SEA': 'Seattle Seahawks', 'TAM': 'Tampa Bay Buccaneers',
+    'TEN': 'Tennessee Titans', 'WAS': 'Washington Commanders', '2TM': 'Multiple Teams',
+    '3TM': 'Multiple Teams', '4TM': 'Multiple Teams'
+  };
+
+  // switch between NBA and NFL mode
+  function switchSport(sport) {
+    currentSport = sport;
+
+    // update nav tabs
+    document.querySelectorAll('.nav-tab').forEach(t => {
+      t.classList.remove('active-nba', 'active-nfl');
+    });
+
+    if (sport === 'nba') {
+      document.querySelectorAll('.nav-tab')[0].classList.add('active-nba');
+      document.getElementById('sportBadge').className = 'sport-badge nba';
+      document.getElementById('sportBadge').textContent = 'NBA';
+      document.getElementById('heroEyebrow').className = 'hero-eyebrow nba';
+      document.getElementById('heroEm').className = 'nba';
+      document.getElementById('heroSub').textContent = 'Search any NBA player and explore their full career — every season, every stat, all in one place.';
+      document.getElementById('searchInput').placeholder = 'Search a player... e.g. LeBron James, Anthony Edwards';
+      document.getElementById('searchBtn').className = 'nba';
+    } else {
+      document.querySelectorAll('.nav-tab')[1].classList.add('active-nfl');
+      document.getElementById('sportBadge').className = 'sport-badge nfl';
+      document.getElementById('sportBadge').textContent = 'NFL';
+      document.getElementById('heroEyebrow').className = 'hero-eyebrow nfl';
+      document.getElementById('heroEm').className = 'nfl';
+      document.getElementById('heroSub').textContent = 'Search any NFL player — QBs, RBs, WRs and TEs — full season stats and career breakdowns.';
+      document.getElementById('searchInput').placeholder = 'Search a player... e.g. Patrick Mahomes, CeeDee Lamb';
+      document.getElementById('searchBtn').className = 'nfl';
+    }
+
+    // clear results
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchDropdown').classList.remove('visible');
+    document.getElementById('profileSection').classList.remove('visible');
+    document.getElementById('profileSection').innerHTML = '';
+  }
 
   // close dropdown when clicking outside
   document.addEventListener('click', e => {
@@ -445,68 +570,125 @@
     }
   });
 
-  const teamNames = {
-  'ATL': 'Atlanta Hawks', 'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets',
-  'CHA': 'Charlotte Hornets', 'CHI': 'Chicago Bulls', 'CLE': 'Cleveland Cavaliers',
-  'DAL': 'Dallas Mavericks', 'DEN': 'Denver Nuggets', 'DET': 'Detroit Pistons',
-  'GSW': 'Golden State Warriors', 'HOU': 'Houston Rockets', 'IND': 'Indiana Pacers',
-  'LAC': 'LA Clippers', 'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies',
-  'MIA': 'Miami Heat', 'MIL': 'Milwaukee Bucks', 'MIN': 'Minnesota Timberwolves',
-  'NOP': 'New Orleans Pelicans', 'NYK': 'New York Knicks', 'OKC': 'Oklahoma City Thunder',
-  'ORL': 'Orlando Magic', 'PHI': 'Philadelphia 76ers', 'PHX': 'Phoenix Suns',
-  'POR': 'Portland Trail Blazers', 'SAC': 'Sacramento Kings', 'SAS': 'San Antonio Spurs',
-  'TOR': 'Toronto Raptors', 'UTA': 'Utah Jazz', 'WAS': 'Washington Wizards',
-  'TOT': 'Multiple Teams (traded)'
-};
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchPlayers();
+  });
 
   async function searchPlayers() {
     const query = document.getElementById('searchInput').value.trim();
     const dropdown = document.getElementById('searchDropdown');
-
     if (!query) return;
 
+    dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">Searching...</div></div>';
+    dropdown.classList.add('visible');
+
+    if (currentSport === 'nba') {
+      await searchNBA(query, dropdown);
+    } else {
+      await searchNFL(query, dropdown);
+    }
+  }
+
+  async function searchNBA(query, dropdown) {
     try {
       const res = await fetch(`/api/players?search=${encodeURIComponent(query)}`);
       const players = await res.json();
 
       if (!players || players.length === 0) {
         dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">No players found</div></div>';
-        dropdown.classList.add('visible');
         return;
       }
 
-      // deduplicate by name — show each player once in dropdown
+      // deduplicate by name
       const seen = {};
-      const unique = [];
-      for (const p of players) {
-        if (!seen[p.name]) {
-          seen[p.name] = true;
-          unique.push(p);
-        }
-      }
+      const unique = players.filter(p => {
+        if (seen[p.name]) return false;
+        seen[p.name] = true;
+        return true;
+      });
 
       dropdown.innerHTML = unique.map(p => `
-        <div class="dropdown-item" onclick="showProfile('${p.name.replace(/'/g, "\\'")}')">
+        <div class="dropdown-item" onclick="showNBAProfile('${p.name.replace(/'/g, "\\'")}')">
           <div>
             <div class="dropdown-name">${p.name}</div>
-            <div class="dropdown-meta">${p.position} · <span class="team-abbr" data-full="${teamNames[p.team] || p.team}">${p.team}</span> · ${p.season}</div>
+            <div class="dropdown-meta">${p.position} · <span class="team-abbr" data-full="${nbaTeams[p.team] || p.team}">${p.team}</span> · ${p.season}</div>
           </div>
-          <div>
-            <div class="dropdown-pts">${p.points.toFixed(1)} <span>PPG</span></div>
-          </div>
+          <div class="dropdown-stat nba">${p.points.toFixed(1)} <span>PPG</span></div>
         </div>
       `).join('');
 
-      dropdown.classList.add('visible');
-
     } catch (err) {
       dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">Error connecting to server</div></div>';
-      dropdown.classList.add('visible');
     }
   }
 
-  async function showProfile(playerName) {
-    // close dropdown
+  async function searchNFL(query, dropdown) {
+    try {
+      // search all three NFL tables at once
+      const [passingRes, rushingRes, receivingRes] = await Promise.all([
+        fetch(`/api/nfl/passing?search=${encodeURIComponent(query)}`),
+        fetch(`/api/nfl/rushing?search=${encodeURIComponent(query)}`),
+        fetch(`/api/nfl/receiving?search=${encodeURIComponent(query)}`)
+      ]);
+
+      const [passing, rushing, receiving] = await Promise.all([
+        passingRes.json(),
+        rushingRes.json(),
+        receivingRes.json()
+      ]);
+
+      // combine results and deduplicate by name
+      const allPlayers = [];
+      const seen = {};
+
+      const addPlayers = (players, statKey, statLabel, unit) => {
+        if (!players) return;
+        for (const p of players) {
+          if (!seen[p.name]) {
+            seen[p.name] = true;
+            allPlayers.push({ ...p, statKey, statLabel, unit });
+          }
+        }
+      };
+
+      addPlayers(passing, 'yards', 'YDS', '');
+      addPlayers(rushing, 'yards', 'YDS', '');
+      addPlayers(receiving, 'yards', 'YDS', '');
+
+      if (allPlayers.length === 0) {
+        dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">No players found</div></div>';
+        return;
+      }
+
+      dropdown.innerHTML = allPlayers.map(p => {
+      const types = Array.isArray(p.stat_types) ? p.stat_types : [];
+      const typeBadges = types.map(t =>
+        `<span style="font-size:0.65rem; padding:2px 6px; border-radius:3px; 
+        background:rgba(0,200,150,0.15); color:var(--nfl); 
+        border:1px solid var(--nfl); margin-left:4px">${t}</span>`
+      ).join('');
+
+      const statDisplay = p.stat_type === 'defense'
+        ? `${p.sacks || 0} <span>SACKS</span>`
+        : `${(p.yards || 0).toLocaleString()} <span>YDS</span>`;
+
+      return `
+        <div class="dropdown-item" onclick="showNFLProfile('${p.name.replace(/'/g, "\\'")}')">
+          <div>
+            <div class="dropdown-name">${p.name} ${typeBadges}</div>
+            <div class="dropdown-meta">${p.position} · <span class="team-abbr" data-full="${nflTeams[p.team] || p.team}">${p.team}</span> · ${p.season}</div>
+          </div>
+          <div class="dropdown-stat nfl">${statDisplay}</div>
+        </div>
+      `;
+    }).join('');
+
+    } catch (err) {
+      dropdown.innerHTML = '<div class="dropdown-item"><div class="dropdown-name" style="color:var(--muted)">Error connecting to server</div></div>';
+    }
+  }
+
+  async function showNBAProfile(playerName) {
     document.getElementById('searchDropdown').classList.remove('visible');
     document.getElementById('searchInput').value = playerName;
 
@@ -515,98 +697,66 @@
     profile.classList.add('visible');
 
     try {
-      // fetch all seasons for this player
       const res = await fetch(`/api/players?search=${encodeURIComponent(playerName)}`);
       const seasons = await res.json();
 
       if (!seasons || seasons.length === 0) {
-        profile.innerHTML = '<div class="empty">No data found for this player.</div>';
+        profile.innerHTML = '<div class="empty">No data found.</div>';
         return;
       }
 
-      // sort seasons oldest to newest
       seasons.sort((a, b) => a.season.localeCompare(b.season));
-
       const p = seasons[0];
 
-      // calculate career averages weighted by games
+      // calculate career averages
       let tG = 0, tPts = 0, tAst = 0, tReb = 0, tStl = 0, tBlk = 0, tFg = 0, tFg3 = 0;
       for (const s of seasons) {
-        tPts += s.points * s.games;
-        tAst += s.assists * s.games;
-        tReb += s.rebounds * s.games;
-        tStl += s.steals * s.games;
-        tBlk += s.blocks * s.games;
-        tFg  += s.fg_pct * s.games;
-        tFg3 += s.three_pct * s.games;
-        tG   += s.games;
+        tPts += s.points * s.games; tAst += s.assists * s.games;
+        tReb += s.rebounds * s.games; tStl += s.steals * s.games;
+        tBlk += s.blocks * s.games; tFg += s.fg_pct * s.games;
+        tFg3 += s.three_pct * s.games; tG += s.games;
       }
 
       const avg = v => (v / tG).toFixed(1);
       const pct = v => ((v / tG) * 100).toFixed(1) + '%';
-
-      // find best season points for highlighting
       const maxPts = Math.max(...seasons.map(s => s.points));
 
       profile.innerHTML = `
         <div class="profile-header">
           <div>
             <div class="profile-name">${p.name}</div>
-            <div class="profile-sub">${seasons.length} season${seasons.length > 1 ? 's' : ''} in database · ${tG} games</div>
+            <div class="profile-sub">${seasons.length} season${seasons.length > 1 ? 's' : ''} · ${tG} games</div>
           </div>
-          <div class="profile-pos">${p.position}</div>
+          <span class="profile-pos nba">${p.position}</span>
         </div>
 
-        <div class="career-banner">
-          <div class="career-stat">
-            <div class="career-stat-value">${avg(tPts)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Points Per Game">PPG</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${avg(tAst)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Assists Per Game">APG</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${avg(tReb)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${avg(tStl)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${avg(tBlk)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Blocks Per Game">BPG</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${pct(tFg)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div>
-          </div>
-          <div class="career-stat">
-            <div class="career-stat-value">${pct(tFg3)}</div>
-            <div class="career-stat-label"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div>
-          </div>
+        <div class="career-banner" style="grid-template-columns: repeat(7, 1fr)">
+          <div class="career-stat"><div class="career-stat-value nba">${avg(tPts)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Points Per Game">PPG</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${avg(tAst)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Assists Per Game">APG</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${avg(tReb)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${avg(tStl)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${avg(tBlk)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Blocks Per Game">BPG</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${pct(tFg)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div></div>
+          <div class="career-stat"><div class="career-stat-value nba">${pct(tFg3)}</div><div class="career-stat-label"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div></div>
         </div>
 
         <div class="season-table-title">Season by Season</div>
         <div class="season-table">
-          <div class="season-head">
-          <div>Season</div>
-          <div>Team</div>
-          <div><span class="team-abbr" data-full="Games Played">G</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="Points Per Game">PPG</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="Assists Per Game">APG</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div>
-          <div style="text-align:right"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div>
-        </div>
+          <div class="season-head" style="grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px">
+            <div>Season</div><div>Team</div><div>G</div>
+            <div style="text-align:right"><span class="team-abbr" data-full="Points Per Game">PPG</span></div>
+            <div style="text-align:right"><span class="team-abbr" data-full="Assists Per Game">APG</span></div>
+            <div style="text-align:right"><span class="team-abbr" data-full="Rebounds Per Game">RPG</span></div>
+            <div style="text-align:right"><span class="team-abbr" data-full="Steals Per Game">SPG</span></div>
+            <div style="text-align:right"><span class="team-abbr" data-full="Field Goal Percentage">FG%</span></div>
+            <div style="text-align:right"><span class="team-abbr" data-full="3-Point Percentage">3P%</span></div>
+          </div>
           ${seasons.map(s => `
-            <div class="season-row">
+            <div class="season-row" style="grid-template-columns: 100px 80px 50px 70px 70px 70px 70px 70px 70px">
               <div class="s-season">${s.season}</div>
-              <div class="s-team"><span class="team-abbr" data-full="${teamNames[s.team] || s.team}">${s.team}</span></div>
+              <div class="s-team"><span class="team-abbr" data-full="${nbaTeams[s.team] || s.team}">${s.team}</span></div>
               <div class="s-stat">${s.games}</div>
-              <div class="s-stat ${s.points === maxPts ? 'best' : ''}">${s.points.toFixed(1)}</div>
+              <div class="s-stat ${s.points === maxPts ? 'best-nba' : ''}">${s.points.toFixed(1)}</div>
               <div class="s-stat">${s.assists.toFixed(1)}</div>
               <div class="s-stat">${s.rebounds.toFixed(1)}</div>
               <div class="s-stat">${s.steals.toFixed(1)}</div>
@@ -618,9 +768,278 @@
       `;
 
     } catch (err) {
-      profile.innerHTML = '<div class="empty">Error loading player profile.</div>';
+      profile.innerHTML = '<div class="empty">Error loading profile.</div>';
     }
   }
+
+async function showNFLProfile(playerName) {
+  document.getElementById('searchDropdown').classList.remove('visible');
+  document.getElementById('searchInput').value = playerName;
+
+  const profile = document.getElementById('profileSection');
+  profile.innerHTML = '<div class="empty">Loading...</div>';
+  profile.classList.add('visible');
+
+  try {
+    const res = await fetch(`/api/nfl/profile?name=${encodeURIComponent(playerName)}`);
+    const data = await res.json();
+
+    if (!data || data.error) {
+      profile.innerHTML = '<div class="empty">No data found.</div>';
+      return;
+    }
+
+    // figure out which stat types this player has
+    const availableTabs = [];
+    if (data.passing && data.passing.length > 0) availableTabs.push('passing');
+    if (data.rushing && data.rushing.length > 0) availableTabs.push('rushing');
+    if (data.receiving && data.receiving.length > 0) availableTabs.push('receiving');
+    if (data.defense && data.defense.length > 0) availableTabs.push('defense');
+
+    // determine primary tab based on position
+    let primaryTab = availableTabs[0] || 'passing';
+    if (data.position === 'QB') primaryTab = 'passing';
+    else if (['RB', 'FB'].includes(data.position)) primaryTab = 'rushing';
+    else if (['WR', 'TE'].includes(data.position)) primaryTab = 'receiving';
+    else if (['CB', 'S', 'LB', 'DE', 'DT', 'OLB', 'ILB', 'MLB', 'SS', 'FS', 'DB', 'DL', 'NT'].includes(data.position)) primaryTab = 'defense';
+
+    // store data globally so tab switching works
+    window.currentNFLData = data;
+    window.currentNFLTabs = availableTabs;
+
+    // render profile with tabs
+    renderNFLProfile(data, availableTabs, primaryTab);
+
+  } catch (err) {
+    profile.innerHTML = '<div class="empty">Error loading profile.</div>';
+  }
+}
+
+function renderNFLProfile(data, availableTabs, activeTab) {
+  const profile = document.getElementById('profileSection');
+
+  // tab labels
+  const tabLabels = {
+    'passing': '⚡ Passing',
+    'rushing': '🏃 Rushing',
+    'receiving': '📡 Receiving',
+    'defense': '🛡️ Defense'
+  };
+
+  // only show tabs if player has more than one stat type
+  const tabsHTML = availableTabs.length > 1 ? `
+    <div style="display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap;">
+      ${availableTabs.map(tab => `
+        <button onclick="switchNFLTab('${tab}')"
+          style="padding:8px 18px; border-radius:4px; font-size:0.8rem; font-weight:700;
+          letter-spacing:1px; cursor:pointer; border:1px solid var(--nfl);
+          background:${tab === activeTab ? 'var(--nfl)' : 'transparent'};
+          color:${tab === activeTab ? '#000' : 'var(--nfl)'};
+          transition: all 0.2s;"
+          id="tab-${tab}">
+          ${tabLabels[tab]}
+        </button>
+      `).join('')}
+    </div>
+  ` : '';
+
+  // build stat section based on active tab
+  let statHTML = '';
+
+  if (activeTab === 'passing' && data.passing) {
+    const seasons = [...data.passing].sort((a,b) => a.season.localeCompare(b.season));
+    let tG=0, tYds=0, tTd=0, tInt=0, tCmp=0, tAtt=0;
+    for (const s of seasons) {
+      tG+=s.games; tYds+=s.yards; tTd+=s.touchdowns;
+      tInt+=s.interceptions; tCmp+=s.completions; tAtt+=s.attempts;
+    }
+    const maxYds = Math.max(...seasons.map(s => s.yards));
+
+    statHTML = `
+      <div class="career-banner" style="grid-template-columns: repeat(6, 1fr); margin-bottom:16px">
+        <div class="career-stat"><div class="career-stat-value nfl">${tYds.toLocaleString()}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Passing Yards">Pass Yds</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tTd}</div><div class="career-stat-label"><span class="team-abbr" data-full="Passing Touchdowns">Pass TDs</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tInt}</div><div class="career-stat-label"><span class="team-abbr" data-full="Interceptions Thrown">INTs</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tAtt>0?((tCmp/tAtt)*100).toFixed(1)+'%':'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Completion Percentage">Cmp%</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tG>0?(tYds/tG).toFixed(1):'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Yards Per Game">Yds/G</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${seasons[seasons.length-1].rating.toFixed(1)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Passer Rating">Rating</span></div></div>
+      </div>
+      <div class="season-table-title">Season by Season</div>
+      <div class="season-table">
+        <div class="season-head" style="grid-template-columns: 90px 70px 40px 80px 60px 50px 70px 70px 70px">
+          <div>Season</div><div>Team</div><div>G</div>
+          <div style="text-align:right">Yds</div><div style="text-align:right">TDs</div>
+          <div style="text-align:right">INTs</div><div style="text-align:right">Cmp%</div>
+          <div style="text-align:right">Yds/G</div><div style="text-align:right">Rating</div>
+        </div>
+        ${seasons.map(s => `
+          <div class="season-row" style="grid-template-columns: 90px 70px 40px 80px 60px 50px 70px 70px 70px">
+            <div class="s-season">${s.season}</div>
+            <div class="s-team"><span class="team-abbr" data-full="${nflTeams[s.team]||s.team}">${s.team}</span></div>
+            <div class="s-stat">${s.games}</div>
+            <div class="s-stat ${s.yards===maxYds?'best-nfl':''}">${s.yards.toLocaleString()}</div>
+            <div class="s-stat">${s.touchdowns}</div>
+            <div class="s-stat">${s.interceptions}</div>
+            <div class="s-stat">${s.comp_pct.toFixed(1)}%</div>
+            <div class="s-stat">${s.yards_per_game.toFixed(1)}</div>
+            <div class="s-stat">${s.rating.toFixed(1)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  else if (activeTab === 'rushing' && data.rushing) {
+    const seasons = [...data.rushing].sort((a,b) => a.season.localeCompare(b.season));
+    let tG=0, tYds=0, tTd=0, tAtt=0;
+    for (const s of seasons) { tG+=s.games; tYds+=s.yards; tTd+=s.touchdowns; tAtt+=s.attempts; }
+    const maxYds = Math.max(...seasons.map(s => s.yards));
+
+    statHTML = `
+      <div class="career-banner" style="grid-template-columns: repeat(5, 1fr); margin-bottom:16px">
+        <div class="career-stat"><div class="career-stat-value nfl">${tYds.toLocaleString()}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Rushing Yards">Rush Yds</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tTd}</div><div class="career-stat-label"><span class="team-abbr" data-full="Rushing Touchdowns">Rush TDs</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tAtt}</div><div class="career-stat-label"><span class="team-abbr" data-full="Rushing Attempts">Attempts</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tAtt>0?(tYds/tAtt).toFixed(1):'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Yards Per Carry">Yds/Car</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tG>0?(tYds/tG).toFixed(1):'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Yards Per Game">Yds/G</span></div></div>
+      </div>
+      <div class="season-table-title">Season by Season</div>
+      <div class="season-table">
+        <div class="season-head" style="grid-template-columns: 90px 70px 40px 80px 70px 70px 70px 70px">
+          <div>Season</div><div>Team</div><div>G</div>
+          <div style="text-align:right">Yds</div><div style="text-align:right">TDs</div>
+          <div style="text-align:right">Att</div><div style="text-align:right">Yds/Car</div>
+          <div style="text-align:right">Yds/G</div>
+        </div>
+        ${seasons.map(s => `
+          <div class="season-row" style="grid-template-columns: 90px 70px 40px 80px 70px 70px 70px 70px">
+            <div class="s-season">${s.season}</div>
+            <div class="s-team"><span class="team-abbr" data-full="${nflTeams[s.team]||s.team}">${s.team}</span></div>
+            <div class="s-stat">${s.games}</div>
+            <div class="s-stat ${s.yards===maxYds?'best-nfl':''}">${s.yards.toLocaleString()}</div>
+            <div class="s-stat">${s.touchdowns}</div>
+            <div class="s-stat">${s.attempts}</div>
+            <div class="s-stat">${s.yards_per_carry.toFixed(1)}</div>
+            <div class="s-stat">${s.yards_per_game.toFixed(1)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  else if (activeTab === 'receiving' && data.receiving) {
+    const seasons = [...data.receiving].sort((a,b) => a.season.localeCompare(b.season));
+    let tG=0, tYds=0, tTd=0, tRec=0, tTgt=0;
+    for (const s of seasons) { tG+=s.games; tYds+=s.yards; tTd+=s.touchdowns; tRec+=s.receptions; tTgt+=s.targets; }
+    const maxYds = Math.max(...seasons.map(s => s.yards));
+
+    statHTML = `
+      <div class="career-banner" style="grid-template-columns: repeat(6, 1fr); margin-bottom:16px">
+        <div class="career-stat"><div class="career-stat-value nfl">${tYds.toLocaleString()}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Receiving Yards">Rec Yds</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tTd}</div><div class="career-stat-label"><span class="team-abbr" data-full="Receiving Touchdowns">Rec TDs</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tRec}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Receptions">Receptions</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tTgt}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Targets">Targets</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tRec>0?(tYds/tRec).toFixed(1):'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Yards Per Reception">Yds/Rec</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tG>0?(tYds/tG).toFixed(1):'—'}</div><div class="career-stat-label"><span class="team-abbr" data-full="Yards Per Game">Yds/G</span></div></div>
+      </div>
+      <div class="season-table-title">Season by Season</div>
+      <div class="season-table">
+        <div class="season-head" style="grid-template-columns: 90px 70px 40px 80px 60px 60px 70px 70px 70px">
+          <div>Season</div><div>Team</div><div>G</div>
+          <div style="text-align:right">Yds</div><div style="text-align:right">TDs</div>
+          <div style="text-align:right">Rec</div><div style="text-align:right">Tgt</div>
+          <div style="text-align:right">Yds/R</div><div style="text-align:right">Yds/G</div>
+        </div>
+        ${seasons.map(s => `
+          <div class="season-row" style="grid-template-columns: 90px 70px 40px 80px 60px 60px 70px 70px 70px">
+            <div class="s-season">${s.season}</div>
+            <div class="s-team"><span class="team-abbr" data-full="${nflTeams[s.team]||s.team}">${s.team}</span></div>
+            <div class="s-stat">${s.games}</div>
+            <div class="s-stat ${s.yards===maxYds?'best-nfl':''}">${s.yards.toLocaleString()}</div>
+            <div class="s-stat">${s.touchdowns}</div>
+            <div class="s-stat">${s.receptions}</div>
+            <div class="s-stat">${s.targets}</div>
+            <div class="s-stat">${s.yards_per_rec.toFixed(1)}</div>
+            <div class="s-stat">${s.yards_per_game.toFixed(1)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  else if (activeTab === 'defense' && data.defense) {
+    const seasons = [...data.defense].sort((a,b) => a.season.localeCompare(b.season));
+    let tG=0, tSacks=0, tTackles=0, tInt=0, tPD=0, tFF=0;
+    for (const s of seasons) {
+      tG+=s.games; tSacks+=s.sacks; tTackles+=s.tackles;
+      tInt+=s.interceptions; tPD+=s.pass_def; tFF+=s.forced_fum;
+    }
+    const maxSacks = Math.max(...seasons.map(s => s.sacks));
+
+    statHTML = `
+      <div class="career-banner" style="grid-template-columns: repeat(6, 1fr); margin-bottom:16px">
+        <div class="career-stat"><div class="career-stat-value nfl">${tSacks.toFixed(1)}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Sacks">Sacks</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tTackles}</div><div class="career-stat-label"><span class="team-abbr" data-full="Total Tackles">Tackles</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tInt}</div><div class="career-stat-label"><span class="team-abbr" data-full="Interceptions">INTs</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tPD}</div><div class="career-stat-label"><span class="team-abbr" data-full="Pass Deflections">Pass Def</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tFF}</div><div class="career-stat-label"><span class="team-abbr" data-full="Forced Fumbles">Forced Fum</span></div></div>
+        <div class="career-stat"><div class="career-stat-value nfl">${tG}</div><div class="career-stat-label">Games</div></div>
+      </div>
+      <div class="season-table-title">Season by Season</div>
+      <div class="season-table">
+        <div class="season-head" style="grid-template-columns: 90px 70px 40px 70px 70px 60px 70px 80px">
+          <div>Season</div><div>Team</div><div>G</div>
+          <div style="text-align:right">Sacks</div><div style="text-align:right">Tackles</div>
+          <div style="text-align:right">INTs</div><div style="text-align:right">Pass Def</div>
+          <div style="text-align:right">Forced Fum</div>
+        </div>
+        ${seasons.map(s => `
+          <div class="season-row" style="grid-template-columns: 90px 70px 40px 70px 70px 60px 70px 80px">
+            <div class="s-season">${s.season}</div>
+            <div class="s-team"><span class="team-abbr" data-full="${nflTeams[s.team]||s.team}">${s.team}</span></div>
+            <div class="s-stat">${s.games}</div>
+            <div class="s-stat ${s.sacks===maxSacks?'best-nfl':''}">${s.sacks.toFixed(1)}</div>
+            <div class="s-stat">${s.tackles}</div>
+            <div class="s-stat">${s.interceptions}</div>
+            <div class="s-stat">${s.pass_def}</div>
+            <div class="s-stat">${s.forced_fum}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  profile.innerHTML = `
+    <div class="profile-header">
+      <div>
+        <div class="profile-name">${data.name}</div>
+        <div class="profile-sub">${data.position} · ${data.team}</div>
+      </div>
+      <span class="profile-pos nfl">${data.position}</span>
+    </div>
+    ${tabsHTML}
+    <div id="nfl-stat-section">${statHTML}</div>
+  `;
+}
+
+function switchNFLTab(tab) {
+  // update button styles
+  window.currentNFLTabs.forEach(t => {
+    const btn = document.getElementById(`tab-${t}`);
+    if (btn) {
+      btn.style.background = t === tab ? 'var(--nfl)' : 'transparent';
+      btn.style.color = t === tab ? '#000' : 'var(--nfl)';
+    }
+  });
+
+  // re-render just the stat section
+  const tempProfile = document.createElement('div');
+  tempProfile.id = 'profileSection';
+  tempProfile.className = 'profile visible';
+  document.getElementById('profileSection').replaceWith(tempProfile);
+
+  renderNFLProfile(window.currentNFLData, window.currentNFLTabs, tab);
+}
 </script>
 
 </body>

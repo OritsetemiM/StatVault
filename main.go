@@ -44,29 +44,34 @@ func main() {
 		}
 	}
 
-		// import NFL data
-	fmt.Println("Importing NFL 2025 passing...")
-	err = importNFLPassing("data/nfl_2025_passing.csv", "2025")
-	if err != nil {
-		log.Printf("Warning: could not import NFL passing: %v\n", err)
+		// NFL seasons
+nflSeasons := []string{"2020", "2021", "2022", "2023", "2024", "2025"}
+
+	for _, s := range nflSeasons {
+    	fmt.Printf("Importing NFL %s passing...\n", s)
+    	err = importNFLPassing(fmt.Sprintf("data/nfl_%s_passing.csv", s), s)
+    	if err != nil {
+        	log.Printf("Warning: NFL passing %s: %v\n", s, err)
+		}
+
+    	fmt.Printf("Importing NFL %s rushing...\n", s)
+    	err = importNFLRushing(fmt.Sprintf("data/nfl_%s_rushing.csv", s), s)
+    	if err != nil {
+        	log.Printf("Warning: NFL rushing %s: %v\n", s, err)
+    	}
+
+    	fmt.Printf("Importing NFL %s receiving...\n", s)
+    	err = importNFLReceiving(fmt.Sprintf("data/nfl_%s_receiving.csv", s), s)
+    	if err != nil {
+        	log.Printf("Warning: NFL receiving %s: %v\n", s, err)
+    	}
+
+    	fmt.Printf("Importing NFL %s defense...\n", s)
+    	err = importNFLDefense(fmt.Sprintf("data/nfl_%s_defense.csv", s), s)
+    	if err != nil {
+        	log.Printf("Warning: NFL defense %s: %v\n", s, err)
+    	}
 	}
-
-	fmt.Println("Importing NFL 2025 rushing...")
-	err = importNFLRushing("data/nfl_2025_rushing.csv", "2025")
-	if err != nil {
-		log.Printf("Warning: could not import NFL rushing: %v\n", err)
-	}
-
-	fmt.Println("Importing NFL 2025 receiving...")
-	err = importNFLReceiving("data/nfl_2025_receiving.csv", "2025")
-	if err != nil {
-		log.Printf("Warning: could not import NFL receiving: %v\n", err)
-	}
-
-	fmt.Println("All seasons imported. Starting server...")
-
 	// start the web server
 	startServer()
-
-
 }
