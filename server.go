@@ -145,6 +145,51 @@ func handleNFLDefense(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, results)
 }
 
+func handleCompare(w http.ResponseWriter, r *http.Request) {
+	sport := r.URL.Query().Get("sport")
+	statType := r.URL.Query().Get("stat_type")
+	name1 := r.URL.Query().Get("player1")
+	name2 := r.URL.Query().Get("player2")
+	season1 := r.URL.Query().Get("season1")
+	season2 := r.URL.Query().Get("season2")
+
+	if name1 == "" || name2 == "" {
+		respondError(w, 400, "Both player names required")
+		return
+	}
+
+	var result *CompareResult
+	var err error
+
+	if sport == "NBA" {
+		result, err = CompareNBAPlayers(name1, season1, name2, season2)
+	} else if sport == "NFL" {
+		switch statType {
+		case "passing":
+			result, err = CompareNFLPassers(name1, season1, name2, season2)
+		case "rushing":
+			result, err = CompareNFLRushers(name1, season1, name2, season2)
+		case "receiving":
+			result, err = CompareNFLReceivers(name1, season1, name2, season2)
+		case "defense":
+			result, err = CompareNFLDefenders(name1, season1, name2, season2)
+		default:
+			respondError(w, 400, "stat_type required for NFL (passing/rushing/receiving/defense)")
+			return
+		}
+	} else {
+		respondError(w, 400, "sport must be NBA or NFL")
+		return
+	}
+
+	if err != nil {
+		respondError(w, 404, err.Error())
+		return
+	}
+
+	respondJSON(w, result)
+}
+
 func startServer() {
 	err := godotenv.Load()
 	if err != nil {
@@ -166,6 +211,7 @@ func startServer() {
 	http.HandleFunc("/api/nfl/rushing", handleNFLRushing)
 	http.HandleFunc("/api/nfl/receiving", handleNFLReceiving)
 	http.HandleFunc("/api/nfl/defense", handleNFLDefense)
+	http.HandleFunc("/api/compare", handleCompare)
 
 	// static frontend
 	http.Handle("/", http.FileServer(http.Dir("./static")))

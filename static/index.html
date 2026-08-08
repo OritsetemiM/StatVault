@@ -453,6 +453,411 @@
 
     footer a { color: var(--accent2); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+
+        .nav-tab.active-compare {
+    color: #fff;
+    border-color: #fff;
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* COMPARE SECTION */
+  #compareSection {
+    display: none;
+    padding: 0 40px 80px;
+    max-width: 1100px;
+  }
+
+  .compare-sport-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .compare-sport-tab {
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .compare-sport-tab.active-nba {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,0,0.06);
+  }
+
+  .compare-sport-tab.active-nfl {
+    border-color: var(--nfl);
+    color: var(--nfl);
+    background: rgba(0,200,150,0.06);
+  }
+
+  .compare-nfl-types {
+    display: none;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .compare-nfl-types.visible { display: flex; }
+
+  .nfl-type-tab {
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .nfl-type-tab.active {
+    border-color: var(--nfl);
+    color: var(--nfl);
+    background: rgba(0,200,150,0.06);
+  }
+
+  .compare-players-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .compare-search-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .compare-search-box h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .compare-search-box .selected-player {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .compare-search-box .selected-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .compare-input-row {
+    display: flex;
+    gap: 0;
+  }
+
+  .compare-input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    color: var(--text);
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .compare-input-row input:focus { border-color: var(--accent2); }
+
+  .compare-input-row button {
+  padding: 10px 16px;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+  .compare-season-select {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .compare-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    z-index: 300;
+    display: none;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  .compare-dropdown.visible { display: block; }
+
+  .compare-dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    transition: background 0.15s;
+  }
+
+  .compare-dropdown-item:last-child { border-bottom: none; }
+  .compare-dropdown-item:hover { background: var(--surface); }
+  .compare-dropdown-item .cd-name { font-weight: 600; color: #fff; }
+  .compare-dropdown-item .cd-meta { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  .compare-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 40px;
+    transition: opacity 0.2s;
+  }
+
+  .compare-btn:hover { opacity: 0.85; }
+  .compare-btn.nfl { background: var(--nfl); }
+
+  /* RESULT CARDS */
+  .compare-result { display: none; }
+  .compare-result.visible { display: block; }
+
+  .score-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .score-player {
+    text-align: center;
+    flex: 1;
+  }
+
+  .score-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .score-season {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .score-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-top: 8px;
+  }
+
+  .score-number.winning { color: var(--accent); }
+  .score-number.winning.nfl { color: var(--nfl); }
+  .score-number.losing { color: var(--muted); }
+
+  .score-vs {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .winner-banner {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .winner-banner.nba { background: rgba(232,255,0,0.1); color: var(--accent); border: 1px solid var(--accent); }
+  .winner-banner.nfl { background: rgba(0,200,150,0.1); color: var(--nfl); border: 1px solid var(--nfl); }
+  .winner-banner.tie { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
+
+  /* STAT ROWS */
+  .stat-rows { margin-bottom: 32px; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 140px 1fr;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    transition: background 0.15s;
+  }
+
+  .stat-row:first-child { border-radius: 8px 8px 0 0; }
+  .stat-row:last-child { border-bottom: none; border-radius: 0 0 8px 8px; }
+  .stat-row:hover { background: var(--surface2); }
+
+  .stat-row-label {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stat-row-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--muted);
+  }
+
+  .stat-row-val.p1 { text-align: left; }
+  .stat-row-val.p2 { text-align: right; }
+
+  .stat-row-val.winner-nba { color: var(--accent); }
+  .stat-row-val.winner-nfl { color: var(--nfl); }
+
+  .stat-unit {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    margin-left: 3px;
+  }
+
+  /* BAR */
+  .stat-bar-row {
+    display: grid;
+    grid-template-columns: 1fr 140px 1fr;
+    align-items: center;
+    padding: 4px 20px 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-bar-row:last-child { border-bottom: none; }
+
+  .bar-container {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.nba { background: var(--accent); }
+  .bar-fill.nfl { background: var(--nfl); }
+
+  .share-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .share-btn:hover { border-color: var(--text); color: var(--text); }
+
+  .explainer-card {
+  flex: 1;
+  min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.explainer-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent2);
+}
+
+.explainer-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.explainer-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.explainer-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
   </style>
 </head>
 <body>
@@ -460,17 +865,35 @@
 <nav>
   <div class="logo">STAT<span>VAULT</span></div>
   <div class="nav-links">
-    <div class="nav-tab active-nba" onclick="switchSport('nba')">NBA</div>
-    <div class="nav-tab" onclick="switchSport('nfl')">NFL</div>
-    <div class="nav-tab" onclick="">Compare</div>
+    <div class="nav-tab active-nba" id="nbaTab" onclick="switchMode('nba')">NBA</div>
+    <div class="nav-tab" id="nflTab" onclick="switchMode('nfl')">NFL</div>
+    <div class="nav-tab" id="compareTab" onclick="switchMode('compare')">Compare</div>
   </div>
 </nav>
 
-<div class="hero">
+<div class="hero" id="heroSection">
   <div class="sport-badge nba" id="sportBadge">NBA</div>
   <p class="hero-eyebrow nba" id="heroEyebrow">Real data. Real players. Your database.</p>
   <h1>Built different.<br><em class="nba" id="heroEm">Proven by stats.</em></h1>
   <p id="heroSub">Search any NBA player and explore their full career — every season, every stat, all in one place.</p>
+</div>
+
+<div id="tabExplainer" style="display:flex; gap:16px; margin:0 40px 40px; flex-wrap:wrap;">
+  <div class="explainer-card" id="explainerNBA" onclick="switchMode('nba')">
+    <div class="explainer-icon">🏀</div>
+    <div class="explainer-title" style="color:var(--accent)">NBA</div>
+    <div class="explainer-desc">Search any NBA player — full career stats, season by season breakdowns, points, assists, rebounds and more.</div>
+  </div>
+  <div class="explainer-card" id="explainerNFL" onclick="switchMode('nfl')">
+    <div class="explainer-icon">🏈</div>
+    <div class="explainer-title" style="color:var(--nfl)">NFL</div>
+    <div class="explainer-desc">Search any NFL player — QBs, RBs, WRs, TEs and defenders. Full career stats across 6 seasons of real data.</div>
+  </div>
+  <div class="explainer-card" id="explainerCompare" onclick="switchMode('compare')">
+    <div class="explainer-icon">⚔️</div>
+    <div class="explainer-title" style="color:#fff">Compare</div>
+    <div class="explainer-desc">Go head to head — compare any two players stat by stat, pick specific seasons, or compare a player to themselves.</div>
+  </div>
 </div>
 
 <div class="search-section" id="searchSection">
@@ -482,6 +905,60 @@
 </div>
 
 <div class="profile" id="profileSection"></div>
+<div id="compareSection">
+  <!-- Sport tabs -->
+  <div class="compare-sport-tabs">
+    <button class="compare-sport-tab active-nba" id="cmpNBA" onclick="switchCompareSport('nba')">🏀 NBA</button>
+    <button class="compare-sport-tab" id="cmpNFL" onclick="switchCompareSport('nfl')">🏈 NFL</button>
+  </div>
+
+  <!-- NFL stat type tabs -->
+  <div class="compare-nfl-types" id="nflTypeTabs">
+    <button class="nfl-type-tab active" id="nflTypePassng" onclick="switchNFLType('passing')">QB Passing</button>
+    <button class="nfl-type-tab" id="nflTypeRushing" onclick="switchNFLType('rushing')">Rushing</button>
+    <button class="nfl-type-tab" id="nflTypeReceiving" onclick="switchNFLType('receiving')">Receiving</button>
+    <button class="nfl-type-tab" id="nflTypeDefense" onclick="switchNFLType('defense')">Defense</button>
+  </div>
+
+  <!-- Two player search boxes -->
+  <div class="compare-players-row">
+    <!-- Player 1 -->
+    <div class="compare-search-box" id="cmpBox1">
+      <h3>Player 1</h3>
+      <div class="selected-player" id="cmpName1">—</div>
+      <div class="selected-meta" id="cmpMeta1">Search below to select</div>
+      <div class="compare-input-row">
+        <input type="text" id="cmpInput1" placeholder="Search player..." onkeydown="if(event.key==='Enter') searchComparePlayer(1)"/>
+        <button onclick="searchComparePlayer(1)">Find</button>
+      </div>
+      <div class="compare-dropdown" id="cmpDropdown1"></div>
+      <select class="compare-season-select" id="cmpSeason1" style="display:none">
+        <option value="">Most Recent Season</option>
+      </select>
+    </div>
+
+    <!-- Player 2 -->
+    <div class="compare-search-box" id="cmpBox2">
+      <h3>Player 2</h3>
+      <div class="selected-player" id="cmpName2">—</div>
+      <div class="selected-meta" id="cmpMeta2">Search below to select</div>
+      <div class="compare-input-row">
+        <input type="text" id="cmpInput2" placeholder="Search player..." onkeydown="if(event.key==='Enter') searchComparePlayer(2)"/>
+        <button onclick="searchComparePlayer(2)">Find</button>
+      </div>
+      <div class="compare-dropdown" id="cmpDropdown2"></div>
+      <select class="compare-season-select" id="cmpSeason2" style="display:none">
+        <option value="">Most Recent Season</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Compare button -->
+  <button class="compare-btn" id="compareBtn" onclick="runComparison()">⚔️ Compare Players</button>
+
+  <!-- Result -->
+  <div class="compare-result" id="compareResult"></div>
+</div>
 <div id="emptyState"></div>
 
 <footer>
@@ -489,10 +966,48 @@
   <a href="https://www.basketball-reference.com" target="_blank">Basketball Reference</a>
   &nbsp;·&nbsp;
   <a href="https://www.pro-football-reference.com" target="_blank">Pro Football Reference</a>
-  &nbsp;·&nbsp; Built by Temi Maku
+  &nbsp;·&nbsp; Built by Oritsetemi "Temi" Maku
 </footer>
 
 <script>
+  let currentMode = 'search'; // 'search' or 'compare'
+  let currentCompareSport = 'nba'; // 'nba' or 'nfl'
+  let currentCompareNFLType = 'passing'; // passing/rushing/receiving/defense
+
+  function switchMode(mode) {
+    currentMode = mode;
+
+    // reset all nav tab styles
+    document.getElementById('nbaTab').classList.remove('active-nba', 'active-nfl', 'active-compare');
+    document.getElementById('nflTab').classList.remove('active-nba', 'active-nfl', 'active-compare');
+    document.getElementById('compareTab').classList.remove('active-nba', 'active-nfl', 'active-compare');
+
+    if (mode === 'compare') {
+      document.getElementById('compareTab').classList.add('active-compare');
+      document.getElementById('heroSection').style.display = 'none';
+      document.getElementById('searchSection').style.display = 'none';
+      document.getElementById('profileSection').classList.remove('visible');
+      document.getElementById('profileSection').innerHTML = '';
+      document.getElementById('compareSection').style.display = 'block';
+      document.getElementById('tabExplainer').style.display = 'none';
+    } else {
+      // back to search mode
+      document.getElementById('compareSection').style.display = 'none';
+      document.getElementById('heroSection').style.display = 'block';
+      document.getElementById('searchSection').style.display = 'block';
+      document.getElementById('profileSection').classList.remove('visible');
+      document.getElementById('profileSection').innerHTML = '';
+      document.getElementById('tabExplainer').style.display = 'flex';
+
+      if (mode === 'nba') {
+        document.getElementById('nbaTab').classList.add('active-nba');
+        switchSport('nba');
+      } else {
+        document.getElementById('nflTab').classList.add('active-nfl');
+        switchSport('nfl');
+      }
+    }
+}
   // current sport mode
   let currentSport = 'nba';
 
@@ -1040,6 +1555,262 @@ function switchNFLTab(tab) {
 
   renderNFLProfile(window.currentNFLData, window.currentNFLTabs, tab);
 }
+// ── COMPARE STATE ──
+let cmpPlayer1 = null;
+let cmpPlayer2 = null;
+
+function switchCompareSport(sport) {
+  currentCompareSport = sport;
+
+  document.getElementById('cmpNBA').className = 'compare-sport-tab' + (sport === 'nba' ? ' active-nba' : '');
+  document.getElementById('cmpNFL').className = 'compare-sport-tab' + (sport === 'nfl' ? ' active-nfl' : '');
+
+  const nflTabs = document.getElementById('nflTypeTabs');
+  nflTabs.className = 'compare-nfl-types' + (sport === 'nfl' ? ' visible' : '');
+
+  const btn = document.getElementById('compareBtn');
+  btn.className = 'compare-btn' + (sport === 'nfl' ? ' nfl' : '');
+
+  // reset selections
+  resetComparePlayer(1);
+  resetComparePlayer(2);
+  document.getElementById('compareResult').className = 'compare-result';
+}
+
+function switchNFLType(type) {
+  currentCompareNFLType = type;
+  document.querySelectorAll('.nfl-type-tab').forEach(t => t.classList.remove('active'));
+  const ids = {passing:'nflTypePassng', rushing:'nflTypeRushing', receiving:'nflTypeReceiving', defense:'nflTypeDefense'};
+  document.getElementById(ids[type]).classList.add('active');
+  resetComparePlayer(1);
+  resetComparePlayer(2);
+  document.getElementById('compareResult').className = 'compare-result';
+}
+
+function resetComparePlayer(num) {
+  if (num === 1) cmpPlayer1 = null;
+  else cmpPlayer2 = null;
+  document.getElementById(`cmpName${num}`).textContent = '—';
+  document.getElementById(`cmpMeta${num}`).textContent = 'Search below to select';
+  document.getElementById(`cmpInput${num}`).value = '';
+  document.getElementById(`cmpSeason${num}`).style.display = 'none';
+  document.getElementById(`cmpDropdown${num}`).className = 'compare-dropdown';
+}
+
+async function searchComparePlayer(num) {
+  const query = document.getElementById(`cmpInput${num}`).value.trim();
+  const dropdown = document.getElementById(`cmpDropdown${num}`);
+  if (!query) return;
+
+  dropdown.innerHTML = '<div class="compare-dropdown-item"><div class="cd-name" style="color:var(--muted)">Searching...</div></div>';
+  dropdown.className = 'compare-dropdown visible';
+
+  try {
+    let players = [];
+
+    if (currentCompareSport === 'nba') {
+      const res = await fetch(`/api/players?search=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      if (data) {
+        // deduplicate by name
+        const seen = {};
+        players = data.filter(p => { if(seen[p.name]) return false; seen[p.name]=true; return true; })
+          .map(p => ({ name: p.name, meta: `${p.position} · ${p.team}`, sport: 'nba' }));
+      }
+    } else {
+      const res = await fetch(`/api/nfl/search?search=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      if (data) {
+        // filter by current NFL type
+        const typeMap = { passing: ['QB'], rushing: ['RB','FB'], receiving: ['WR','TE'], defense: ['CB','S','SS','FS','DB','LB','OLB','ILB','MLB','DE','DT','DL','NT','EDGE'] };
+        const validPos = typeMap[currentCompareNFLType] || [];
+        players = data
+          .filter(p => validPos.includes(p.position) || currentCompareNFLType === 'rushing' || currentCompareNFLType === 'receiving')
+          .map(p => ({ name: p.name, meta: `${p.position} · ${p.team}`, sport: 'nfl', stat_types: p.stat_types }));
+      }
+    }
+
+    if (!players || players.length === 0) {
+      dropdown.innerHTML = '<div class="compare-dropdown-item"><div class="cd-name" style="color:var(--muted)">No players found</div></div>';
+      return;
+    }
+
+    dropdown.innerHTML = players.slice(0, 8).map(p => `
+      <div class="compare-dropdown-item" onclick="selectComparePlayer(${num}, '${p.name.replace(/'/g,"\\'")}', '${p.meta}')">
+        <div class="cd-name">${p.name}</div>
+        <div class="cd-meta">${p.meta}</div>
+      </div>
+    `).join('');
+
+  } catch(err) {
+    dropdown.innerHTML = '<div class="compare-dropdown-item"><div class="cd-name" style="color:var(--muted)">Error connecting to server</div></div>';
+  }
+}
+
+async function selectComparePlayer(num, name, meta) {
+  document.getElementById(`cmpDropdown${num}`).className = 'compare-dropdown';
+  document.getElementById(`cmpName${num}`).textContent = name;
+  document.getElementById(`cmpMeta${num}`).textContent = meta;
+  document.getElementById(`cmpInput${num}`).value = name;
+
+  if (num === 1) cmpPlayer1 = name;
+  else cmpPlayer2 = name;
+
+  // load seasons for this player
+  await loadPlayerSeasons(num, name);
+}
+
+async function loadPlayerSeasons(num, name) {
+  const select = document.getElementById(`cmpSeason${num}`);
+  select.innerHTML = '<option value="">Most Recent Season</option><option value="career">Career Average</option>';
+
+  try {
+    let seasons = [];
+
+    if (currentCompareSport === 'nba') {
+      const res = await fetch(`/api/players?search=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (data) {
+        // get unique seasons sorted newest first
+        const unique = [...new Set(data.map(p => p.season))].sort().reverse();
+        seasons = unique;
+      }
+    } else {
+      const tableMap = { passing: 'nfl_passing', rushing: 'nfl_rushing', receiving: 'nfl_receiving', defense: 'nfl_defense' };
+      const endpointMap = { passing: 'passing', rushing: 'rushing', receiving: 'receiving', defense: 'defense' };
+      const res = await fetch(`/api/nfl/${endpointMap[currentCompareNFLType]}?search=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (data) {
+        const unique = [...new Set(data.map(p => p.season))].sort().reverse();
+        seasons = unique;
+      }
+    }
+
+    seasons.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      select.appendChild(opt);
+    });
+
+    select.style.display = 'block';
+
+  } catch(err) {
+    console.error('Could not load seasons:', err);
+  }
+}
+
+async function runComparison() {
+  if (!cmpPlayer1 || !cmpPlayer2) {
+    alert('Please select both players first!');
+    return;
+  }
+
+  const season1 = document.getElementById('cmpSeason1').value;
+  const season2 = document.getElementById('cmpSeason2').value;
+  const result = document.getElementById('compareResult');
+
+  result.innerHTML = '<div class="empty">Comparing...</div>';
+  result.className = 'compare-result visible';
+
+  try {
+    let url = `/api/compare?player1=${encodeURIComponent(cmpPlayer1)}&player2=${encodeURIComponent(cmpPlayer2)}&season1=${encodeURIComponent(season1)}&season2=${encodeURIComponent(season2)}`;
+
+    if (currentCompareSport === 'nba') {
+      url += '&sport=NBA';
+    } else {
+      url += `&sport=NFL&stat_type=${currentCompareNFLType}`;
+    }
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.error) {
+      result.innerHTML = `<div class="empty">${data.error}</div>`;
+      return;
+    }
+
+    renderCompareResult(data);
+
+  } catch(err) {
+    result.innerHTML = '<div class="empty">Error running comparison.</div>';
+  }
+}
+
+function renderCompareResult(data) {
+  const result = document.getElementById('compareResult');
+  const isNFL = data.sport === 'NFL';
+  const accentClass = isNFL ? 'nfl' : 'nba';
+
+  const p1Winning = data.score1 > data.score2;
+  const p2Winning = data.score2 > data.score1;
+  const tied = data.score1 === data.score2;
+
+  // find max values for bar scaling
+  const maxVals = data.categories.map(c => Math.max(c.val1, c.val2));
+
+  const statsHTML = data.categories.map((c, i) => {
+    const maxVal = maxVals[i];
+    const bar1Width = maxVal > 0 ? (c.val1 / maxVal) * 100 : 0;
+    const bar2Width = maxVal > 0 ? (c.val2 / maxVal) * 100 : 0;
+
+    const val1Class = c.winner === 1 ? `winner-${accentClass}` : '';
+    const val2Class = c.winner === 2 ? `winner-${accentClass}` : '';
+
+    const fmt = v => Number.isInteger(v) ? v.toLocaleString() : v.toFixed(1);
+
+    return `
+      <div class="stat-row">
+        <div class="stat-row-val p1 ${val1Class}">${fmt(c.val1)}<span class="stat-unit">${c.unit}</span></div>
+        <div class="stat-row-label">${c.label}</div>
+        <div class="stat-row-val p2 ${val2Class}">${fmt(c.val2)}<span class="stat-unit">${c.unit}</span></div>
+      </div>
+      <div class="stat-bar-row">
+        <div class="bar-container" style="direction:rtl">
+          <div class="bar-fill ${accentClass}" style="width:${bar1Width}%"></div>
+        </div>
+        <div></div>
+        <div class="bar-container">
+          <div class="bar-fill ${accentClass}" style="width:${bar2Width}%"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const winnerText = tied ? "It's a Tie!" : `🏆 ${data.winner} Wins`;
+  const winnerClass = tied ? 'tie' : accentClass;
+
+  const shareText = tied
+    ? `${data.player1} vs ${data.player2} — It's a Tie! (${data.score1}-${data.score2}) on StatVault`
+    : `${data.winner} beats ${data.winner === data.player1 ? data.player2 : data.player1} ${data.score1}-${data.score2} on StatVault`;
+
+  result.innerHTML = `
+    <div class="score-banner">
+      <div class="score-player">
+        <div class="score-name">${data.player1}</div>
+        <div class="score-season">${data.season1}</div>
+        <div class="score-number ${p1Winning ? `winning ${accentClass}` : 'losing'}">${data.score1}</div>
+      </div>
+      <div class="score-vs">VS</div>
+      <div class="score-player">
+        <div class="score-name">${data.player2}</div>
+        <div class="score-season">${data.season2}</div>
+        <div class="score-number ${p2Winning ? `winning ${accentClass}` : 'losing'}">${data.score2}</div>
+      </div>
+    </div>
+
+    <div class="winner-banner ${winnerClass}">${winnerText}</div>
+
+    <div class="stat-rows">${statsHTML}</div>
+
+    <button class="share-btn" onclick="navigator.clipboard.writeText('${shareText}').then(() => this.textContent = '✓ Copied!').catch(()=>{})">
+      📋 Copy Result to Share
+    </button>
+  `;
+}
+
+switchSport('nba');
+
 </script>
 
 </body>
